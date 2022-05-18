@@ -7,72 +7,39 @@ using namespace std;
 
 void exitPage(){
 
-cout << "                                                           __,-O<            ,-- "<< endl;
-cout << "--.                                  \\.          -='            -' " << endl;
-cout << "   \\                                __\\O-                      ,---"  << endl;
-cout << "   --.                                `^                       /      " << endl;
-cout << "      ).          __,-O<    \\              __,-O<            ,--      " << endl;
-cout << " ----'  `.          `\\)   __)\\O-__           )/          ,--(    ,;:. " << endl;
-cout << "         _)          /      `^  _)\\O<        /          (_      .:;:;." << endl;
-cout << "       |         |               `^                           :;';.;:'" << endl;
-cout << "       |_        |_        |                                   ';\\||' " << endl;
-cout << "______/=\\______/=\\_______|                            JML ap    :|  " << endl;
-cout << "'-'-'-[=]/'-'-'-[=]/'-'-'-/'.=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:=:= " << endl;
-cout << "-'-'-'-'-'-'-'-'-'-'-'-'-/   '.                                      | " << endl;
-cout << "'-'-'-'-'-'-'-'-'-'-'-'-/    .-'            .--.--.                |/| " << endl;
-cout << "-'-'-'-'-'-'-'-'-'-'-'-/ _.-'.-:          .; .;|;. ;.            |/|/ " << endl;
-cout << "       ___       ___   |' _.'\\ :|--|--|- .;_;'   ';_;. --|--|--|/|/   " << endl;
-cout << "|]   [|_|_|]   [|_|_|] | |\\ | \\:|--|--| ; ;'       '; ; -|--|--|/     " << endl;
-cout << "|]   [|_|_|]   [|_|_|] | | \\|--'       ;; .--.___.--. ;;              " << endl;
-cout << "_______________________| |.-'          ;-[  O )=( O  ]-;   " << endl;
-cout << "                     |/|               (  `--' | `--'  )       AW Hole Mcdonald" <<endl;
-cout << "     ____.-\".      |/|/                 \\|    (      |/   goodbye now" << endl;
-cout << "   ;( ,__.)/='   |/|/                    .  .:::::.  .        i'll see you" << endl;
-cout << "   ; |/  \\|    |/|/                       .  '---'  .       in your sweetest dreams" << endl;
-cout << "     \\    |  |/|/                         |`.     .'|                 i love you" << endl;
-cout << "      `   `|/|/                  ,-------/|  `...'  |\\-------,        sleep well 💕" << endl;
-cout << "|--|--|--|/|/                  ,'       | `.       ,' |       `,      :p" << endl;
-cout << "|--|--|--|/                   /         \\  /'.   ,'\\  /         \\      🥵😫🥱😌😛🍙😎🙄🙄🙄🙄🙄🙄🙄🙄🙄🙄🙄🙄🙄💅💅💅💅💅" << endl;
-cout << "                             ;           |/   \\ /   \\|           ;    " << endl;
-cout << "                             ;    ; . /  '     |.    '  \\ .;    ;    " << endl;
-cout << "                            ;      `-'         |         `-'     ;" << endl;
+    cout << " __________" << endl;
+    cout << "|  __  __  |" << endl;
+    cout << "| |  ||  | |" << endl;
+    cout << "| |  ||  | |  buh bye" << endl;
+    cout << "| |__||__| |" << endl;
+    cout << "|  __  __()|" << endl;
+    cout << "| |  ||  | |" << endl;
+    cout << "| |  ||  | |" << endl;
+    cout << "| |  ||  | |" << endl;
+    cout << "| |  ||  | |" << endl;
+    cout << "| |__||__| |" << endl;
+    cout << "|__________|" << endl;
 
-// ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣴⣶⣿⣿⣷⣶⣄⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀        amogus amogus amogus amogus amogus amogus
-// ⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⣾⣿⣿⡿⢿⣿⣿⣿⣿⣿⣿⣿⣷⣦⡀⠀⠀⠀⠀⠀ amogus amogus amogus amogus amogus amogus amogus
-// ⠀⠀⠀⠀⠀⠀⠀⢀⣾⣿⣿⡟⠁⣰⣿⣿⣿⡿⠿⠻⠿⣿⣿⣿⣿⣧⠀⠀⠀⠀ amogus amogus amogus amogus amogus amogus amogus
-// ⠀⠀⠀⠀⠀⠀⠀⣾⣿⣿⠏⠀⣴⣿⣿⣿⠉⠀⠀⠀⠀⠀⠈⢻⣿⣿⣇⠀⠀⠀ amogus amogus amogus amogus amogus amogus amogus
-// ⠀⠀⠀⠀⢀⣠⣼⣿⣿⡏⠀⢠⣿⣿⣿⠇⠀⠀-⠀⠀⠀-⠈⣿⣿⣿⡀⠀⠀ amogus amogus amogus amogus amogus amogus amogus
-// ⠀⠀⠀⣰⣿⣿⣿⣿⣿⡇⠀⢸⣿⣿⣿⡀⠀⠀|⠀⠀⠀|⠀⣿⣿⣿⡇⠀⠀ amogus amogus amogus amogus amogus amogus amogus
-// ⠀⠀⢰⣿⣿⡿⣿⣿⣿⡇⠀⠘⣿⣿⣿⣧⠀⠀⠀⠀⠀⠀⢀⣸⣿⣿⣿⠁⠀⠀ amogus amogus amogus amogus amogus amogus amogus
-// ⠀⠀⣿⣿⣿⠁⣿⣿⣿⡇⠀⠀⠻⣿⣿⣿⣷⣶⣶⣶⣶⣶⣿⣿⣿⣿⠃⠀⠀⠀ amogus amogus amogus amogus amogus amogus amogus
-// ⠀⢰⣿⣿⡇⠀⣿⣿⣿⠀⠀⠀⠀⠈⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿⠟⠁⠀⠀⠀⠀ amogus amogus amogus amogus amogus amogus amogus
-// ⠀⢸⣿⣿⡇⠀⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠉⠛⠛⠛⠉⢉⣿⣿⠀⠀⠀⠀⠀⠀ amogus amogus amogus amogus amogus amogus amogus
-// ⠀⢸⣿⣿⣇⠀⣿⣿⣿⠀⠀⠀⠀⠀⢀⣤⣤⣤⡀⠀⠀⢸⣿⣿⣿⣷⣦⠀⠀⠀ amogus amogus amogus amogus amogus amogus amogus
-// ⠀⠀⢻⣿⣿⣶⣿⣿⣿⠀⠀⠀⠀⠀⠈⠻⣿⣿⣿⣦⡀⠀⠉⠉⠻⣿⣿⡇⠀⠀ amogus amogus amogus amogus amogus amogus amogus
-// ⠀⠀⠀⠛⠿⣿⣿⣿⣿⣷⣤⡀⠀⠀⠀⠀⠈⠹⣿⣿⣇⣀⠀⣠⣾⣿⣿⡇⠀⠀ amogus amogus amogus amogus amogus amogus amogus
-// ⠀⠀⠀⠀⠀⠀⠀⠹⣿⣿⣿⣿⣦⣤⣤⣤⣤⣾⣿⣿⣿⣿⣿⣿⣿⣿⡟⠀⠀⠀ amogus amogus amogus amogus amogus amogus
-// ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠻⢿⣿⣿⣿⣿⣿⣿⠿⠋⠉⠛⠋⠉⠉⠁⠀⠀⠀⠀
-// ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠉⠉⠁
 }
 
 void processMatrix(int size, int edgeArr[][50], string nameArr[]){
-    cout << "1. Only go from start to end, node crossed doesn't matter (ignore them, they suck anyways)" << endl;
-    cout << "2. Add addwitwional nodes, on top of the start and end nodes."<<endl;
-    cout << "3. All of em baby ;)"<< endl;
-    cout << "Twese awe owur sewvices, pwease kwindwly entwer your chwoice UwU: ";
+    cout << "1. Only go from start to end, the crossed nodes doesn't matter (ignore them, they suck anyways)" << endl;
+    cout << "2. Add additional nodes, on top of the start and end nodes." << endl;
+    cout << "3. Select all options (you absolute fiend)" << endl;
+    cout << "These are our services, please kindly enter your choice: ";
 
     int userChoice;
     cin >> userChoice;
 
     if (userChoice == 1) {
-        cout << "Bestie💅, you've selected option 1, only one for me .";
+        cout << "You've selected option 1. Like the number of times I've gone outside since 2020.";
     } else if (userChoice == 2) {
-        cout << "Oamagahh 💅💅💅 you picked option 2! That's my favorite, 2 for u and me! X3 💅";
+        cout << "You've picked option 2. Like how it takes 2 to tango out of difficult route.";
     } else if (userChoice == 3) {
-        cout << "I have 3 words for u, since u chose option tres. I. Love. U. <3 💅";
+        cout << "You've picked option 3. Like trees... In the forest. Yeah, I got nothing. ";
     }
     
-    cout << "Enter the start and end nodes rawr XD:";
+    cout << "Enter the start and end nodes:";
 }
 
 
@@ -121,22 +88,22 @@ void createMatrix(int size){
 
     cout << endl;
     cout << "1. Only go from start to end, node crossed doesn't matter (ignore them, they suck anyways)" << endl;
-    cout << "2. Add addwitwional nodes, on top of the start and end nodes." << endl;
-    cout << "3. All of em baby ;)"<< endl;
-    cout << "Twese awe owur sewvices, pwease kwindwly entwer your chwoice UwU: ";
+    cout << "2. Add additional nodes, on top of the start and end nodes." << endl;
+    cout << "3. Select all options (you absolute fiend, think of the program)"<< endl;
+    cout << "These are our services, please kindly enter your choice: ";
 
     int userChoice;
     cin >> userChoice;
 
     if (userChoice == 1) {
-        cout << "Bestie, you've selected option 1, only one for me.";
+        cout << "You've selected option 1. You've got uno! Oh, wait, no. No. You don't. Oops.";
     } else if (userChoice == 2) {
-        cout << "Oamagahh you picked option 2! That's my favorite, 2 for u and me! X3";
+        cout << "You've selected option 2. ";
     } else if (userChoice == 3) {
-        cout << "I have 3 words for u, since u chose option tres. I. Love. U. <3";
+        cout << "You've selected option 3. I have 3 letters for you, RUN. As in Remotely Utilized Navigation-Bot :)";
     }
     
-    cout << "\nEnter the start and end nodes rawr XD:";
+    cout << "\nEnter the start and end nodes:";
 }
 
 int customMenu(){
@@ -159,7 +126,7 @@ bool MainMenu(){
     cout << "2. Custom Matrix " << endl;
     cout << "3. More Info" << endl;
     cout << "4. Quit" << endl;
-    cout << "Enter an option, bestie 💅 : ";
+    cout << "Enter an option, dude. We're waiting. : ";
     cin >> n;
     
     if(n == 1){

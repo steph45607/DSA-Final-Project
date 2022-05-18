@@ -1,86 +1,84 @@
 // Program to shortest path from a given source vertex ‘s’ to
 // a given destination vertex ‘t’. Expected time complexity
-// is O(numNodes+E).
+// is O(V+E).
 #include <iostream>
 #include <list>
 using namespace std;
 
 // This class represents a directed graph using adjacency
 // list representation
-class Matrix
+class Graph
 {
-	int numNodes; // No. of vertices
+	int V; // No. of vertices
 	list<int> *adj; // adjacency lists
 public:
-	Matrix(int numNodes); // Constructor
-	void addEdge(int originNode, int destinationNode, int cost); // adds an edge
+	Graph(int V); // Constructor
+	void addEdge(int v, int w, int weight); // adds an edge
 
 	// finds shortest path from source vertex ‘s’ to
 	// destination vertex ‘d’.
-	int findShortestPath(int sourceNode, int endNode);
+	int findShortestPath(int s, int d);
 
 	// print shortest path from a source vertex ‘s’ to
 	// destination vertex ‘d’.
-	int printShortestPath(int parent[], int startNode, int endNode);
+	int printShortestPath(int parent[], int s, int d);
 };
 
-Matrix::Matrix(int numNodes)
+Graph::Graph(int V)
 {
-	this->numNodes = numNodes;
-	adj = new list<int>[2*numNodes];
+	this->V = V;
+	adj = new list<int>[2*V];
 }
 
-void Matrix::addEdge(int originNode, int destinationNode, int cost)
+void Graph::addEdge(int v, int w, int weight)
 {
-	// split all edges of cost 2 into two
-	// edges of cost 1 each. The intermediate
+	// split all edges of weight 2 into two
+	// edges of weight 1 each. The intermediate
 	// vertex number is maximum vertex number + 1,
-	// that is numNodes.
-	if (cost==2)
+	// that is V.
+	if (weight==2)
 	{
-		adj[originNode].push_back(originNode+numNodes);
-		adj[originNode+numNodes].push_back(destinationNode);
+		adj[v].push_back(v+V);
+		adj[v+V].push_back(w);
 	}
 	else // Weight is 1
-		adj[originNode].push_back(destinationNode); // Add w to v’s list.
+		adj[v].push_back(w); // Add w to v’s list.
 }
 
 // To print the shortest path stored in parent[]
-int Matrix::printShortestPath(int parent[], int startNode, int endNode)
+int Graph::printShortestPath(int parent[], int s, int d)
 {
 	static int level = 0;
 
 	// If we reached root of shortest path tree
-	if (parent[startNode] == -1)
+	if (parent[s] == -1)
 	{
-		cout << "Shortest Path between " << startNode << " and "
-			<< endNode << " is " << startNode << " ";
+		cout << "Shortest Path between " << s << " and "
+			<< d << " is " << s << " ";
 		return level;
 	}
+    // level++;
+	printShortestPath(parent, parent[s], d);
 
+	level++;
+	if (s < V)
+		cout << s << " ";
 
-	printShortestPath(parent, parent[startNode], endNode);
-
-    level++;
-	if (startNode < numNodes){
-		cout << startNode << " ";
-    }
-
-
+    // printShortestPath(parent, parent[s], d);
 	return level;
 }
 
 // This function mainly does BFS and prints the
 // shortest path from src to dest. It is assumed
-// that cost of every edge is 1
-int Matrix::findShortestPath(int startNode, int endNode)
+// that weight of every edge is 1
+int Graph::findShortestPath(int src, int dest)
 {
 	// Mark all the vertices as not visited
-	bool *visited = new bool[2*numNodes];
-	int *parent = new int[2*numNodes];
+	bool *visited = new bool[2*V];
+	int *parent = new int[2*V];
 
 	// Initialize parent[] and visited[]
-	for (int i = 0; i < 2*numNodes; i++)
+	for (int i = 0; i < 2*V; i++)
 	{
 		visited[i] = false;
 		parent[i] = -1;
@@ -90,8 +88,8 @@ int Matrix::findShortestPath(int startNode, int endNode)
 	list<int> queue;
 
 	// Mark the current node as visited and enqueue it
-	visited[startNode] = true;
-	queue.push_back(startNode);
+	visited[src] = true;
+	queue.push_back(src);
 
 	// 'i' will be used to get all adjacent vertices of a vertex
 	list<int>::iterator i;
@@ -101,8 +99,8 @@ int Matrix::findShortestPath(int startNode, int endNode)
 		// Dequeue a vertex from queue and print it
 		int s = queue.front();
 
-		if (s == endNode)
-			return printShortestPath(parent, s, endNode);
+		if (s == dest)
+			return printShortestPath(parent, s, dest);
 
 		queue.pop_front();
 
@@ -125,8 +123,8 @@ int Matrix::findShortestPath(int startNode, int endNode)
 int main()
 {
 	// Create a graph given in the above diagram
-	int numNodes = 4;
-	Matrix g(numNodes);
+	int V = 4;
+	Graph g(V);
 	g.addEdge(0, 1, 2);
 	g.addEdge(0, 2, 2);
 	g.addEdge(1, 2, 1);
@@ -135,8 +133,10 @@ int main()
 	g.addEdge(2, 3, 2);
 	g.addEdge(3, 3, 2);
 
-	int start = 0, end = 3;
-	cout << "\nShortest Distance between " << start << " and " << end << " is " << g.findShortestPath(start, end);
+	int src = 0, dest = 3;
+	cout << "\nShortest Distance between " << src
+		<< " and " << dest << " is "
+		<< g.findShortestPath(src, dest);
 
 	return 0;
 }
