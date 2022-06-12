@@ -166,7 +166,7 @@ bool MainMenu(){
         exitPage();
     }
     else{
-        cout << "                    _________________________________________________" << endl;
+        cout << "                     _________________________________________________" << endl;
         cout << "            /|     |                                                 |" << endl;
         cout << "            ||     |   PLEASE ENTER THE RIGHT NUMBER 🔪              |" << endl;
         cout << "       .----|-----,|      PLEASE ENTER THE RIGHT NUMBER 🔪           |" << endl;
