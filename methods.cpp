@@ -45,18 +45,21 @@ void processMatrix(int size, int edgeArr[][50], string nameArr[]){
 
 void createMatrix(int size){
     int n = size;
-    cout << "\nInput edge values:" << endl;
-    int edgeValues[size][size];
-    for (int i = 0; i < size; i++){
-        for(int j = 0; j < size; j++){
-            cin >> edgeValues[i][j];
-        }
-    }
+
     string nodeNames[size];
     cout << "\nEnter node names: ";
     // enter the node names
     for(int i = 0; i < size; i++){
         cin >> nodeNames[i];
+    }
+
+    cout << "\nInput edge values:" << endl;
+    // enter values from one node to the other
+    int edgeValues[size][size];
+    for (int i = 0; i < size; i++){
+        for(int j = 0; j < size; j++){
+            cin >> edgeValues[i][j];
+        }
     }
     
     // print the matrix
@@ -156,6 +159,7 @@ bool MainMenu(){
         cout << "(You're already in this option so idk why you need more info on this but here ya go) "<< endl;
         cout << "-------------------------------------------------------------------------------------------------------" << endl;
         cout << "4. Quit... ಠ_ಠ"<< endl;
+        MainMenu();
 
     }else if (n == 4){
         

@@ -47,6 +47,7 @@ void Graph::addEdge(int v, int w, int weight)
 
 // To print the shortest path stored in parent[]
 int Graph::printShortestPath(int parent[], int s, int d)
+
 {
 	static int level = 0;
 
@@ -55,16 +56,17 @@ int Graph::printShortestPath(int parent[], int s, int d)
 	{
 		cout << "Shortest Path between " << s << " and "
 			<< d << " is " << s << " ";
+	
 		return level;
 	}
     // level++;
 	printShortestPath(parent, parent[s], d);
 
 	level++;
-	if (s < V)
+	if (s < V){
 		cout << s << " ";
+	}
 
-    // printShortestPath(parent, parent[s], d);
 	return level;
 }
 
@@ -134,9 +136,11 @@ int main()
 	g.addEdge(3, 3, 2);
 
 	int src = 0, dest = 3;
+	int dist = g.findShortestPath(src, dest);
+
 	cout << "\nShortest Distance between " << src
 		<< " and " << dest << " is "
-		<< g.findShortestPath(src, dest);
+		<< dist;
 
 	return 0;
 }
