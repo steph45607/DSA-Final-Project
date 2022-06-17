@@ -7,7 +7,6 @@
 #include <climits>
 #include <queue>
 #include <string>
-// #include "Graph.h"
 
 using std::cout;
 using std::endl;
@@ -42,16 +41,6 @@ struct Edge {
 		return a.weight > b.weight;
 	}
 };
-
-// class Graph {
-// public:
-// 	virtual bool 
-// 		connect(int v, int u, int w, bool bi_dir = false) = 0;
-// 	virtual bool 
-// 		disconnect(int v, int u, bool bi_dir = false) = 0;
-// };
-
-
 
 class DisjointSet {
 private:
@@ -147,8 +136,10 @@ class ListGraph{
 	int edg_cnt; // number of edges in the graph
 
 public:
-	ListGraph(int vc);
-	
+	ListGraph(int vc):
+	vert_cnt(vc),
+	edg_cnt(0),
+	adj(vc, vector<pair<int, int> >(vc)){}
 	// bi_dir means does the graph connect both ways
 	bool connect(int v, int u, int w, bool bi_dir = false){
 		adj.at(v).at(u).first = u;
