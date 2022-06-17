@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <string>
+#include <vector>
 
 #include "test3.cpp"
 
@@ -47,14 +48,16 @@ void processMatrix(int size, int edgeArr[][50], string nameArr[]){
 }
 
 
-void test_dijkstra_mat(MatrixGraph input, int from) {
+vector<int> test_dijkstra_mat(MatrixGraph input, int from) {
 	auto prev = input.dijkstra(from);
 	print(prev);
+    return prev;
 }
 
-void test_dijkstra_list(ListGraph input, int from){
+vector<int> test_dijkstra_list(ListGraph input, int from){
     auto prev = input.dijkstra(from);
     print(prev);
+    return prev;
 }
 
 void createMatrix(int size){
@@ -75,7 +78,6 @@ void createMatrix(int size){
     int edgeValues[size][size];
     for (int i = 0; i < size; i++){
         for(int j = 0; j < size; j++){
-            
             int weight;
             cin >> weight;
             edgeValues[i][j] = weight;
@@ -105,36 +107,76 @@ void createMatrix(int size){
         }
         cout << endl;
     }
-
+    
+    //prompting for source node
     cout << "Enter source node: ";
     cin >> from;
 
-    test_dijkstra_mat(matrixUser, from);
-    test_dijkstra_list(listUser, from);
+    //storing the last node visited before the index node
+    vector<int> matrixPrev = test_dijkstra_mat(matrixUser, from);
+    vector<int> listPrev = test_dijkstra_list(listUser, from);
+    
+    //prompting for end node
+    int endNode;
+    cout << "Enter end node:";
+    cin >> endNode ;
 
-    // cout >> edgeValues
+    vector<int> listPath ;
+    vector<int> matrixPath;
+    int costList = 0;
+    int costMatrix = 0;
+
+    listPath.push_back(endNode);
+    matrixPath.push_back(endNode);
+
+    // while(endNode != -1){
+    //     int prevNodeList = listPrev.at(endNode);
+    //     int prevNodeMatrix = matrixPrev.at(endNode);
+
+    //     costList += listUser.getWeight(prevNodeList, endNode);
+    //     costMatrix += matrixUser.getWeight(prevNodeMatrix, endNode);
+
+    //     listPath.push_back(listPrev.at(endNode));
+    //     matrixPath.push_back(matrixPrev.at(endNode));
+    //     endNode = listPrev.at(endNode);
+    // }
+
+
+    while(endNode != from){
+        int prevNodeList = listPrev.at(endNode);
+        int prevNodeMatrix = matrixPrev.at(endNode);
+
+        costList += listUser.getWeight(prevNodeList, endNode);
+        costMatrix += matrixUser.getWeight(prevNodeMatrix, endNode);
+
+        listPath.push_back(listPrev.at(endNode));
+        matrixPath.push_back(matrixPrev.at(endNode));
+        endNode = listPrev.at(endNode);
+    }
+
+
+
+
+    cout << "Matrix Cost\t: " << costMatrix << endl;
+
+    for(int i = 0; i < matrixPath.size(); i++){
+        cout << matrixPath[i] << " ";
+    }
+    cout << endl;
+
+
+    cout << "List Cost\t: " << costList << endl;
+
+    for(int i = 0; i < listPath.size(); i++){
+        cout << listPath[i] << " ";
+    }
+    cout << endl;
+
+    
 
     //calling the processMatrix method
     // processMatrix(size, edgeValues[size][size], nodeNames[size]);
-
-    cout << endl;
-    cout << "1. Only go from start to end, node crossed doesn't matter (ignore them, they suck anyways)" << endl;
-    cout << "2. Add additional nodes, on top of the start and end nodes." << endl;
-    cout << "3. Select all options (you absolute fiend, think of the program)"<< endl;
-    cout << "These are our services, please kindly enter your choice: ";
-
-    int userChoice;
-    cin >> userChoice;
-
-    if (userChoice == 1) {
-        cout << "You've selected option 1. You've got uno! Oh, wait, no. No. You don't. Oops.";
-    } else if (userChoice == 2) {
-        cout << "You've selected option 2. ";
-    } else if (userChoice == 3) {
-        cout << "You've selected option 3. I have 3 letters for you, RUN. As in Remotely Utilized Navigation-Bot :)";
-    }
     
-    cout << "\nEnter the start and end nodes:";
 }
 
 int customMenu(){
@@ -146,14 +188,6 @@ int customMenu(){
     return 3;
 }
 
-// void test_dijkstra_mat() {
-// 	auto prev = matrixUser.dijkstra(0);
-// 	print(prev);
-// }
-
-int algoTing(){
-
-}
 
 bool MainMenu(){
     int n;

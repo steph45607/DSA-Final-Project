@@ -82,6 +82,10 @@ public:
 	return true;
 }
 
+int getWeight(int from, int to){
+		return mat.at(from).at(to);
+	}
+
 
 vector<Edge> neighbor(int v) {
 	vector<Edge> res;
@@ -150,6 +154,10 @@ public:
 		}
 		return true;
 	};
+
+	int getWeight(int from, int to){
+		return adj.at(from).at(to).second;
+	}
 
 	vector<Edge> neighbor(int v){
 		vector<Edge> res;
