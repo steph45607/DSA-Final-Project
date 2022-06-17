@@ -3,6 +3,10 @@
 
 #include <iostream>
 #include <string>
+
+#include "test3.cpp"
+
+
 using namespace std;
 
 void exitPage(){
@@ -38,13 +42,26 @@ void processMatrix(int size, int edgeArr[][50], string nameArr[]){
     } else if (userChoice == 3) {
         cout << "You've picked option 3. Like trees... In the forest. Yeah, I got nothing. ";
     }
-    
+    cout << "NOTE: ALL NODES WILL BE BI-DIRECTIONAL";
     cout << "Enter the start and end nodes:";
 }
 
 
+void test_dijkstra_mat(MatrixGraph input, int from) {
+	auto prev = input.dijkstra(from);
+	print(prev);
+}
+
+void test_dijkstra_list(ListGraph input, int from){
+    auto prev = input.dijkstra(from);
+    print(prev);
+}
+
 void createMatrix(int size){
     int n = size;
+    int from;
+    MatrixGraph matrixUser(size);
+    ListGraph listUser(size);
 
     string nodeNames[size];
     cout << "\nEnter node names: ";
@@ -58,7 +75,12 @@ void createMatrix(int size){
     int edgeValues[size][size];
     for (int i = 0; i < size; i++){
         for(int j = 0; j < size; j++){
-            cin >> edgeValues[i][j];
+            
+            int weight;
+            cin >> weight;
+            edgeValues[i][j] = weight;
+            matrixUser.connect(i, j, weight, true);
+            listUser.connect(i, j, weight, true);
         }
     }
     
@@ -83,6 +105,12 @@ void createMatrix(int size){
         }
         cout << endl;
     }
+
+    cout << "Enter source node: ";
+    cin >> from;
+
+    test_dijkstra_mat(matrixUser, from);
+    test_dijkstra_list(listUser, from);
 
     // cout >> edgeValues
 
@@ -118,50 +146,45 @@ int customMenu(){
     return 3;
 }
 
+// void test_dijkstra_mat() {
+// 	auto prev = matrixUser.dijkstra(0);
+// 	print(prev);
+// }
+
 int algoTing(){
-    return true;
+
 }
 
 bool MainMenu(){
     int n;
     cout << ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" << endl;
-    cout << "1. Randomly Generated Matrix and Route" << endl;
-    cout << "2. Custom Matrix " << endl;
-    cout << "3. More Info" << endl;
-    cout << "4. Quit" << endl;
+    cout << "1. Custom Matrix " << endl;
+    cout << "2. More Info" << endl;
+    cout << "3. Quit" << endl;
     cout << "Enter an option, dude. We're waiting. : ";
     cin >> n;
     
     if(n == 1){
         cout << "You have chosen option 1." << endl;
         cout << "------------------------" << endl;
-    }
-    else if(n == 2){
-        cout << "You have chosen option 2." << endl;
-        cout << "------------------------" << endl;
         customMenu();
     }
-    else if(n == 3){
+    else if(n == 2){
         cout << ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" << endl;
-        cout << "You have chosen option 3" << endl;
+        cout << "You have chosen option 2." << endl;
         cout << "-------------------------------------------------------------------------------------------------------" << endl;
-        cout << "1. Randomly Generated Matrix and Route " << endl;
-        cout << "This option will generate a random matrix (duh, it's in the name man). " << endl;
-        cout << "You'll be prompted to input the size of the matrix you want, then it will generate a random matrix and" << endl;
-        cout << "automatically search the shortest and most optimal routes for it. " << endl;
-        cout << "-------------------------------------------------------------------------------------------------------" << endl;
-        cout << "2. Custom Matrix"<< endl;
+        cout << "1. Custom Matrix"<< endl;
         cout << "This custom matrix option will help you to manually input the matrix based on your preferences."<< endl;
         cout << "Input the matrix you want to pathfind," <<endl;
         cout << "-------------------------------------------------------------------------------------------------------" << endl;
-        cout << "3. More Info" << endl;
+        cout << "2. More Info" << endl;
         cout << "This option will open the guidebook on the Route-Bot program." << endl;
         cout << "(You're already in this option so idk why you need more info on this but here ya go) "<< endl;
         cout << "-------------------------------------------------------------------------------------------------------" << endl;
-        cout << "4. Quit... ಠ_ಠ"<< endl;
+        cout << "3. Quit... ಠ_ಠ"<< endl;
         MainMenu();
 
-    }else if (n == 4){
+    }else if (n == 3){
         
         exitPage();
     }

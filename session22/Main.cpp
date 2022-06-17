@@ -90,7 +90,7 @@ void test_dijkstra_mat() {
 	print(prev);
 }
 void test_pq() {
-	priority_queue<Edge, vector<Edge>, greater<Edge>> pq;
+	priority_queue< Edge, vector<Edge>, greater<Edge> > pq;
 	greater<Edge> f;
 	Edge a = {0, 1, 3 };
 	Edge b = {0, 2, 2 };
@@ -110,7 +110,7 @@ int main() {
 	// test_bfs_mat();
 	// test_dfs_mat();
 	// test_pq();
-	// test_prims_mat();
-	test_kruskal_mat();
+	test_prims_mat();
+	// test_kruskal_mat();
 	// test_dijkstra_mat();
 }
