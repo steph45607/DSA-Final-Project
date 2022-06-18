@@ -4,6 +4,8 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <limits>
+#include <chrono>
 
 #include "ListGraph.cpp"
 #include "MatrixGraph.cpp"
@@ -30,43 +32,16 @@ void exitPage(){
 
 
 
-
-
-// void processMatrix(int size, int edgeArr[][50], string nameArr[]){
-//     cout << "1. Only go from start to end, the crossed nodes doesn't matter (ignore them, they suck anyways)" << endl;
-//     cout << "2. Add additional nodes, on top of the start and end nodes." << endl;
-//     cout << "3. Select all options (you absolute fiend)" << endl;
-//     cout << "These are our services, please kindly enter your choice: ";
-
-//     int userChoice;
-//     cin >> userChoice;
-
-//     if (userChoice == 1) {
-//         cout << "You've selected option 1. Like the number of times I've gone outside since 2020.";
-//     } else if (userChoice == 2) {
-//         cout << "You've picked option 2. Like how it takes 2 to tango out of difficult route.";
-//     } else if (userChoice == 3) {
-//         cout << "You've picked option 3. Like trees... In the forest. Yeah, I got nothing. ";
-//     }
-
-// }
-
-
 vector<int> matrixDijkstra(MatrixGraph input, int from) {
 	auto prev = input.dijkstra(from);
-	print(prev);
     return prev;
 }
 
 vector<int> listDijkstra(ListGraph input, int from){
     auto prev = input.dijkstra(from);
-    print(prev);
     return prev;
 }
 
-// void continueProgram(){
-//     MainMenu();
-// }
 
 void createMatrix(int size){
     int startNode;
@@ -78,12 +53,30 @@ void createMatrix(int size){
     MatrixGraph matrixUser(size);
     ListGraph listUser(size);
     
-    cout << "NOTE: ALL NODES WILL BE BI-DIRECTIONAL (GOES BOTH WAYS)"<< endl;
+    cout << "\nNOTE: ALL NODES WILL BE BI-DIRECTIONAL (GOES BOTH WAYS)"<< endl;
 
     cout << "\nEnter node names: ";
     // enter the node names
     for(int i = 0; i < size; i++){
         cin >> nodeNames[i];
+    }
+
+    //input validation for the node names
+    int nodeNameSize = sizeof(nodeNames)/sizeof(nodeNames[0]);
+
+    while(nodeNameSize > size){
+        if(cin.fail()){
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(),'\n');
+            cout<<"\nYou've entered too many node names, please make sure that the amount of node names is equal to the matriz size."<< endl;
+            cout << "\nEnter the node names: ";
+            for(int i = 0; i < size; i++){
+                cin >> nodeNames[i];
+            }
+        }
+        if(!cin.fail()){
+            break;
+        }
     }
 
     cout << "\nInput edge values:" << endl;
@@ -124,38 +117,77 @@ void createMatrix(int size){
     cout << "Enter source node: ";
     cin >> startNode;
 
-    //storing the last node visited before the index node
-    vector<int> matrixPrev = matrixDijkstra(matrixUser, startNode);
-    vector<int> listPrev = listDijkstra(listUser, startNode);
-    
     //prompting for end node
     int endNode;
     cout << "Enter end node:";
     cin >> endNode ;
 
-    //declaring the vectors for the paths
-    vector<int> listPath ;
+    int endNodeList = endNode;
+    int endNodeMatrix = endNode;
+
+
+    
+    //TESTING FOR TIME TAKEN
+    srand(time(0));
+
+    //MATRIX TIME TAKEN START
+    auto startMatrixTime = chrono::steady_clock::now();
+
+    //declaring the vectors for the matrix paths
+    vector<int> matrixPrev = matrixDijkstra(matrixUser, startNode);
     vector<int> matrixPath;
-    //declaring
-    int costList = 0;
+
+    //initializing the values for the total matrix path costs
     int costMatrix = 0;
+    matrixPath.push_back(endNodeMatrix);
 
-    listPath.push_back(endNode);
-    matrixPath.push_back(endNode);
+    //adding the matrix path costs to find the total
+    //adding the matrix path nodes to the resulting path list
+    while(endNodeMatrix != startNode){
+        int prevNodeMatrix = matrixPrev.at(endNodeMatrix);
 
-    while(endNode != startNode){
-        int prevNodeList = listPrev.at(endNode);
-        int prevNodeMatrix = matrixPrev.at(endNode);
-
-        costList += listUser.getWeight(prevNodeList, endNode);
-        costMatrix += matrixUser.getWeight(prevNodeMatrix, endNode);
-
-        listPath.push_back(listPrev.at(endNode));
-        matrixPath.push_back(matrixPrev.at(endNode));
-        endNode = listPrev.at(endNode);
+        costMatrix += matrixUser.getWeight(prevNodeMatrix, endNodeMatrix);
+        matrixPath.push_back(matrixPrev.at(endNodeMatrix));
+        endNodeMatrix = matrixPrev.at(endNodeMatrix);
     }
+    auto endMatrixTime = chrono::steady_clock::now();
 
+    //MATRIX TIME TAKEN END
 
+    //LIST TIME TAKEN START
+    auto startListTime = chrono::steady_clock::now();
+
+    //declaring the vectors for the list paths
+    vector<int> listPrev = listDijkstra(listUser, startNode);
+    vector<int> listPath ;
+
+    //initializing the values for the total path costs
+    int costList = 0;
+
+    listPath.push_back(endNodeList);
+
+    //adding the list path costs to find the total
+    //adding the list path nodes to the resulting path list
+    while(endNodeList != startNode){
+        int prevNodeList = listPrev.at(endNodeList);
+
+        costList += listUser.getWeight(prevNodeList, endNodeList);
+
+        listPath.push_back(listPrev.at(endNodeList));
+        endNodeList = listPrev.at(endNodeList);
+    }
+    auto endListTime = chrono::steady_clock::now();
+
+    //LIST TIME TAKEN END
+
+    //getting the end time taken
+    double totalMatrixTime = double(chrono::duration_cast<chrono::nanoseconds> (endMatrixTime - startMatrixTime).count());
+    double totalListTime = double(chrono::duration_cast<chrono::nanoseconds> (endListTime - startListTime).count());
+
+    cout << "\nTime for matrix\t: " << totalMatrixTime << endl;
+    cout << "\nTime for list\t: " << totalListTime << endl;
+
+    //declaring the vectors for the paths
 
     //Printing out the cost and path
     cout << "Matrix Cost\t: " << costMatrix << endl;
@@ -175,61 +207,99 @@ void createMatrix(int size){
 
 }
 
-void processMatrixSize(){
-    int size;
-    cout << "Enter matrix size: ";
-    cin >> size;
-    createMatrix(size);
+int inputValidation(bool inputFail){
+
+    int result;
+    while(inputFail){
+        if(cin.fail()){
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(),'\n');
+            cout<<"\nYou've entered an invalid input, please make sure it's a numeric value (No words, no ASCII art, just numbers, ok?)"<< endl;
+            cout << "\nEnter a valid input: ";
+            cin >> result;
+        }
+        if(!cin.fail()){
+            break;
+        }
+    }
+    return result;
 }
 
+void processMatrixSize(){
+    int size;
+    //prompting user for the matrix size
+    cout << "Enter matrix size: ";
+    cin >> size;
+
+    //input validation for the matrix size
+    bool inputFail2 = cin.fail();
+    if(inputFail2){
+        size = inputValidation(inputFail2);
+    }else{
+        createMatrix(size);
+    }
+}
+
+//function for showing the main menu options
 bool MainMenu(){
-    int n;
-    cout << ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" << endl;
+    int userChoice;
+    //printing the main menu options
+    cout << "\n:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" << endl;
     cout << "1. Custom Matrix " << endl;
     cout << "2. More Info" << endl;
     cout << "3. Quit" << endl;
     cout << "Enter an option, dude. We're waiting. : ";
-    cin >> n;
+    cin >> userChoice;
     
-    if(n == 1){
-        cout << "You have chosen option 1." << endl;
-        cout << "------------------------" << endl;
-        processMatrixSize();
-        MainMenu();
-    }
-    else if(n == 2){
-        cout << ":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" << endl;
-        cout << "You have chosen option 2." << endl;
-        cout << "-------------------------------------------------------------------------------------------------------" << endl;
-        cout << "1. Custom Matrix"<< endl;
-        cout << "This custom matrix option will help you to manually input the matrix based on your preferences."<< endl;
-        cout << "Input the matrix you want to pathfind," <<endl;
-        cout << "-------------------------------------------------------------------------------------------------------" << endl;
-        cout << "2. More Info" << endl;
-        cout << "This option will open the guidebook on the Route-Bot program." << endl;
-        cout << "(You're already in this option so idk why you need more info on this but here ya go) "<< endl;
-        cout << "-------------------------------------------------------------------------------------------------------" << endl;
-        cout << "3. Quit... ಠ_ಠ"<< endl;
-        MainMenu();
+    //input validation for the options
+    bool inputFail = cin.fail();
+    if(inputFail){
+        userChoice = inputValidation(inputFail);
+    }else{
+        //processing if the input = 1
+        if(userChoice == 1){
+            cout << "You have chosen option 1." << endl;
+            cout << "------------------------" << endl;
+            processMatrixSize();
+            MainMenu();
+        }
+        //processing if the input = 2
+        else if(userChoice == 2){
+            cout << "\n:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" << endl;
+            cout << "You have chosen option 2." << endl;
+            cout << "MORE INFORMATION" << endl;
+            cout << "-------------------------------------------------------------------------------------------------------" << endl;
+            cout << "1. Custom Matrix"<< endl;
+            cout << "This custom matrix option will help you to manually input the matrix based on your preferences."<< endl;
+            cout << "Input the matrix you want to pathfind," <<endl;
+            cout << "-------------------------------------------------------------------------------------------------------" << endl;
+            cout << "2. More Info" << endl;
+            cout << "This option will open the guidebook on the Route-Bot program." << endl;
+            cout << "(You're already in this option so idk why you need more info on this but here ya go) "<< endl;
+            cout << "-------------------------------------------------------------------------------------------------------" << endl;
+            cout << "3. Quit... ಠ_ಠ"<< endl;
+            MainMenu();
 
-    }else if (n == 3){
-        
-        exitPage();
+        }else if (userChoice == 3){ //processing if the input = 3
+
+            exitPage();
+        }
+        else{
+            cout << "                     _________________________________________________" << endl;
+            cout << "            /|     |                                                 |" << endl;
+            cout << "            ||     |   PLEASE ENTER THE RIGHT NUMBER 🔪              |" << endl;
+            cout << "       .----|-----,|      PLEASE ENTER THE RIGHT NUMBER 🔪           |" << endl;
+            cout << "       ||  ||   ==||           PLEASE ENTER THE RIGHT NUMBER 🔪      |" << endl;
+            cout << "  .-----'--'|   ==||                PLEASE ENTER THE RIGHT NUMBER 🔪 |" << endl;
+            cout << "  |)-      ~|     ||_________________________________________________|" << endl;
+            cout << "  | ___     |     |____...==..._  >\\______________________________|==💨💨💨" << endl;
+            cout << " [_/.-.\"---------- //.-.  .-.\\/                   \\ .-.  .-. //" << endl;
+            cout << "   ( o )`===\"\"\"\"\"\"\"\"( o )( o )                    `( o )( o )`" << endl;
+            cout << "    '-'              '-'  '-'                       '-'  '-'" << endl;
+            MainMenu();
+        }
     }
-    else{
-        cout << "                     _________________________________________________" << endl;
-        cout << "            /|     |                                                 |" << endl;
-        cout << "            ||     |   PLEASE ENTER THE RIGHT NUMBER 🔪              |" << endl;
-        cout << "       .----|-----,|      PLEASE ENTER THE RIGHT NUMBER 🔪           |" << endl;
-        cout << "       ||  ||   ==||           PLEASE ENTER THE RIGHT NUMBER 🔪      |" << endl;
-        cout << "  .-----'--'|   ==||                PLEASE ENTER THE RIGHT NUMBER 🔪 |" << endl;
-        cout << "  |)-      ~|     ||_________________________________________________|" << endl;
-        cout << "  | ___     |     |____...==..._  >\\______________________________|==💨💨💨" << endl;
-        cout << " [_/.-.\"---------- //.-.  .-.\\/                   \\ .-.  .-. //" << endl;
-        cout << "   ( o )`===\"\"\"\"\"\"\"\"( o )( o )                    `( o )( o )`" << endl;
-        cout << "    '-'              '-'  '-'                       '-'  '-'" << endl;
-        MainMenu();
-    }
+    
 }
 
 #endif
