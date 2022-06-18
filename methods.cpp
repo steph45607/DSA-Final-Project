@@ -56,30 +56,19 @@ void createMatrix(int size){
     cout << "\nNOTE: ALL NODES WILL BE BI-DIRECTIONAL (GOES BOTH WAYS)"<< endl;
 
     cout << "\nEnter node names: ";
-    // enter the node names
+
+    // storing the node names
     for(int i = 0; i < size; i++){
         cin >> nodeNames[i];
     }
 
-    //input validation for the node names
-    int nodeNameSize = sizeof(nodeNames)/sizeof(nodeNames[0]);
+    //ignoring any extra inputs
+    //for example, for a matrix with a size of 3:
+    //if the user inputs 5 node names, will only detect the first 3
+    cin.ignore(numeric_limits<streamsize>::max(),'\n');
 
-    while(nodeNameSize > size){
-        if(cin.fail()){
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(),'\n');
-            cout<<"\nYou've entered too many node names, please make sure that the amount of node names is equal to the matriz size."<< endl;
-            cout << "\nEnter the node names: ";
-            for(int i = 0; i < size; i++){
-                cin >> nodeNames[i];
-            }
-        }
-        if(!cin.fail()){
-            break;
-        }
-    }
 
-    cout << "\nInput edge values:" << endl;
+    cout << "\nPlease input " << size*size << " edge values:" << endl;
     // enter values from one node to the other
     for (int i = 0; i < size; i++){
         for(int j = 0; j < size; j++){
@@ -90,6 +79,33 @@ void createMatrix(int size){
             listUser.connect(i, j, weight, true);
         }
     }
+
+    while(true){
+        if(cin.fail()){
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(),'\n');
+            cout<<"\nYou've entered an invalid input, please make sure it's a numeric value (No words, no ASCII art, just numbers, ok?)"<< endl;
+            cout << "\nEnter a valid input: ";
+            for (int i = 0; i < size; i++){
+                for(int j = 0; j < size; j++){
+                    int weight;
+                    cin >> weight;
+                    edgeWeights[i][j] = weight;
+                    matrixUser.connect(i, j, weight, true);
+                    listUser.connect(i, j, weight, true);
+                }
+            }
+        }
+        if(!cin.fail()){
+            break;
+        }
+    }
+
+
+    //ignoring any extra inputs
+    //for example, for a matrix with a size of 3, total weight needed is 9:
+    //if the user inputs 12 node names, will only detect the first 9
+    cin.ignore(numeric_limits<streamsize>::max(),'\n');
     
     // print the matrix
     // add space for matrix format
@@ -235,9 +251,9 @@ void processMatrixSize(){
     bool inputFail2 = cin.fail();
     if(inputFail2){
         size = inputValidation(inputFail2);
-    }else{
-        createMatrix(size);
     }
+    createMatrix(size);
+
 }
 
 //function for showing the main menu options
@@ -255,49 +271,48 @@ bool MainMenu(){
     bool inputFail = cin.fail();
     if(inputFail){
         userChoice = inputValidation(inputFail);
-    }else{
-        //processing if the input = 1
-        if(userChoice == 1){
-            cout << "You have chosen option 1." << endl;
-            cout << "------------------------" << endl;
-            processMatrixSize();
-            MainMenu();
-        }
-        //processing if the input = 2
-        else if(userChoice == 2){
-            cout << "\n:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" << endl;
-            cout << "You have chosen option 2." << endl;
-            cout << "MORE INFORMATION" << endl;
-            cout << "-------------------------------------------------------------------------------------------------------" << endl;
-            cout << "1. Custom Matrix"<< endl;
-            cout << "This custom matrix option will help you to manually input the matrix based on your preferences."<< endl;
-            cout << "Input the matrix you want to pathfind," <<endl;
-            cout << "-------------------------------------------------------------------------------------------------------" << endl;
-            cout << "2. More Info" << endl;
-            cout << "This option will open the guidebook on the Route-Bot program." << endl;
-            cout << "(You're already in this option so idk why you need more info on this but here ya go) "<< endl;
-            cout << "-------------------------------------------------------------------------------------------------------" << endl;
-            cout << "3. Quit... ಠ_ಠ"<< endl;
-            MainMenu();
+    }
+    //processing if the input = 1
+    if(userChoice == 1){
+        cout << "You have chosen option 1." << endl;
+        cout << "------------------------" << endl;
+        processMatrixSize();
+        MainMenu();
+    }
+    //processing if the input = 2
+    else if(userChoice == 2){
+        cout << "\n:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" << endl;
+        cout << "You have chosen option 2." << endl;
+        cout << "MORE INFORMATION" << endl;
+        cout << "-------------------------------------------------------------------------------------------------------" << endl;
+        cout << "1. Custom Matrix"<< endl;
+        cout << "This custom matrix option will help you to manually input the matrix based on your preferences."<< endl;
+        cout << "Input the matrix you want to pathfind," <<endl;
+        cout << "-------------------------------------------------------------------------------------------------------" << endl;
+        cout << "2. More Info" << endl;
+        cout << "This option will open the guidebook on the Route-Bot program." << endl;
+        cout << "(You're already in this option so idk why you need more info on this but here ya go) "<< endl;
+        cout << "-------------------------------------------------------------------------------------------------------" << endl;
+        cout << "3. Quit... ಠ_ಠ"<< endl;
+        MainMenu();
 
-        }else if (userChoice == 3){ //processing if the input = 3
+    }else if (userChoice == 3){ //processing if the input = 3
 
-            exitPage();
-        }
-        else{
-            cout << "                     _________________________________________________" << endl;
-            cout << "            /|     |                                                 |" << endl;
-            cout << "            ||     |   PLEASE ENTER THE RIGHT NUMBER 🔪              |" << endl;
-            cout << "       .----|-----,|      PLEASE ENTER THE RIGHT NUMBER 🔪           |" << endl;
-            cout << "       ||  ||   ==||           PLEASE ENTER THE RIGHT NUMBER 🔪      |" << endl;
-            cout << "  .-----'--'|   ==||                PLEASE ENTER THE RIGHT NUMBER 🔪 |" << endl;
-            cout << "  |)-      ~|     ||_________________________________________________|" << endl;
-            cout << "  | ___     |     |____...==..._  >\\______________________________|==💨💨💨" << endl;
-            cout << " [_/.-.\"---------- //.-.  .-.\\/                   \\ .-.  .-. //" << endl;
-            cout << "   ( o )`===\"\"\"\"\"\"\"\"( o )( o )                    `( o )( o )`" << endl;
-            cout << "    '-'              '-'  '-'                       '-'  '-'" << endl;
-            MainMenu();
-        }
+        exitPage();
+    }
+    else{
+        cout << "                     _________________________________________________" << endl;
+        cout << "            /|     |                                                 |" << endl;
+        cout << "            ||     |   PLEASE ENTER THE RIGHT NUMBER 🔪              |" << endl;
+        cout << "       .----|-----,|      PLEASE ENTER THE RIGHT NUMBER 🔪           |" << endl;
+        cout << "       ||  ||   ==||           PLEASE ENTER THE RIGHT NUMBER 🔪      |" << endl;
+        cout << "  .-----'--'|   ==||                PLEASE ENTER THE RIGHT NUMBER 🔪 |" << endl;
+        cout << "  |)-      ~|     ||_________________________________________________|" << endl;
+        cout << "  | ___     |     |____...==..._  >\\______________________________|==💨💨💨" << endl;
+        cout << " [_/.-.\"---------- //.-.  .-.\\/                   \\ .-.  .-. //" << endl;
+        cout << "   ( o )`===\"\"\"\"\"\"\"\"( o )( o )                    `( o )( o )`" << endl;
+        cout << "    '-'              '-'  '-'                       '-'  '-'" << endl;
+        MainMenu();
     }
     
 }
