@@ -29,3 +29,12 @@ int DisjointSet::find(int x) {
 void DisjointSet::join(int x, int y) {
 	parent[find(x)] = find(y);
 }
+
+template <class T>
+void print(const vector<T>& vec, const string& pre = "", const string& suf = "\n") {
+	cout << pre << "[";
+	for (const T& x : vec) {
+		cout << x << ", ";
+	}
+	cout << "]" << suf;
+}

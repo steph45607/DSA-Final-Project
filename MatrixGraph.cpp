@@ -1,72 +1,63 @@
-#ifndef _LISTGRAPH_
-#define _LISTGRAPH_
+#ifndef _MATRIX_
+#define _MATRIX_
+
 #include <iostream>
 #include <climits>
+#include <queue> // for queue and priority queue
 #include <vector>
-#include <queue>
-
 #include "Graph.cpp"
-// using std::vector;
-// using std::pair;
+
 // using std::cout;
 // using std::endl;
 // using std::priority_queue;
 // using std::greater;
+// using std::vector;
 using namespace std;
 
-class ListGraph : public Graph{
+// Matrix part
+class MatrixGraph : public Graph{
 	private:
-		vector<vector< pair<int, int> > > adj;
-		// The vector is going to like this:
-		// each pair is going to be (u, w)
-		// 0 [(1, 2), (2, 3)]
-		// 1 [(0, 2), ]
-		// 2 []
-		// 3 []
-		int vert_cnt; // number of vertexes in the graph[
+		vector< vector<int> > mat;
+		int vert_cnt; // number of vertexes in the graph
 		int edg_cnt; // number of edges in the graph
-
 	public:
-		ListGraph(int vc):
-		vert_cnt(vc), edg_cnt(0), adj(vc, vector<pair<int, int> >(vc)){}
+		MatrixGraph(int vc):
+		vert_cnt(vc), edg_cnt(0), mat(vc, vector<int>(vc)) { }
 		// bi_dir means does the graph connect both ways
-		bool connect(int v, int u, int w, bool bi_dir = false){
-			adj.at(v).at(u).first = u;
-			adj.at(v).at(u).second = w;
-			if(bi_dir){
-				adj.at(u).at(v).first = v;
-				adj.at(u).at(v).second = w;
-			}
+		bool connect(int v, int u, int w, bool bi_dir) {
+			mat.at(v).at(u) = w;
+			if (bi_dir) mat.at(u).at(v) = w;
 			return true;
 		}
+
 		bool disconnect(int v, int u, bool bi_dir) {
-			adj.at(v).at(u).second = 0;
-			if (bi_dir) adj.at(u).at(v).second = 0;
+			mat.at(v).at(u) = 0;
+			if (bi_dir) mat.at(u).at(v) = 0;
 			return true;
 		}
 
 		int getWeight(int from, int to){
-			return adj.at(from).at(to).second;
+			return mat.at(from).at(to);
 		}
 
-		vector<Edge> neighbor(int v){
+		vector<Edge> neighbor(int v) {
 			vector<Edge> res;
 			for (int i = 0; i < vert_cnt; i++) {
-				if (adj.at(v).at(i).second > 0) {
-					Edge a = {v, i, adj.at(v).at(i).second};
+				if (mat.at(v).at(i) > 0) {
+					Edge a = {v, i, mat.at(v).at(i)};
 					res.push_back(a);
 				}
 			}
 			return res;
 		}
-		
-		vector<int> dijkstra(int s){
+
+		vector<int> dijkstra(int s) {
 			vector<int> prev(vert_cnt, -1);
 			vector<int> dist(vert_cnt, INT_MAX);
 			priority_queue< Edge, vector<Edge>, greater<Edge> > pq;
 			dist[s] = 0;
-			Edge edge1 = { -1, s, 0 };
-			pq.push(edge1);
+			Edge ed = {-1, s, 0};
+			pq.push(ed);
 			Edge current;
 			while (!pq.empty()) {
 				current = pq.top();
@@ -77,8 +68,8 @@ class ListGraph : public Graph{
 						if (dist[e.to] > dist[e.from] + e.weight) {
 							dist[e.to] = dist[e.from] + e.weight;
 							prev[e.to] = e.from;
-							Edge edge2 = { e.from, e.to, dist[e.to] };
-							pq.push(edge2);
+							Edge toPush = {e.from, e.to, dist[e.to]};
+							pq.push(toPush);
 						}
 					}
 				}

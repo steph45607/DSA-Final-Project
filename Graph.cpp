@@ -2,7 +2,7 @@
 #define _GRAPH_
 #include <iostream>
 #include <vector>
-using std::vector;
+using namespace std;
 struct Edge {
 	int from;
 	int to;
@@ -25,10 +25,8 @@ struct Edge {
 
 class Graph {
 public:
-	virtual bool 
-		connect(int v, int u, int w, bool bi_dir = false) = 0;
-	virtual bool 
-		disconnect(int v, int u, bool bi_dir = false) = 0;
+	virtual bool connect(int v, int u, int w, bool bi_dir = false) = 0;
+	virtual bool disconnect(int v, int u, bool bi_dir = false) = 0;
 };
 
 class DisjointSet {
@@ -47,4 +45,13 @@ public:
 		parent[find(x)] = find(y);
 	};
 };
+
+template <class T>
+void print(const vector<T>& vec, const string& pre = "", const string& suf = "\n") {
+	cout << pre << "[";
+	for (const T& x : vec) {
+		cout << x << ", ";
+	}
+	cout << "]" << suf;
+}
 #endif
