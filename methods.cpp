@@ -6,13 +6,15 @@
 #include <vector>
 #include <limits>
 #include <chrono>
+#include <algorithm>
+#include <iterator>
 
 #include "ListGraph.cpp"
 #include "MatrixGraph.cpp"
 
 using namespace std;
-using std::find;
 
+//printing the quit/exit page
 void exitPage(){
 
     cout << " __________" << endl;
@@ -42,20 +44,70 @@ vector<int> listDijkstra(ListGraph input, int from){
     return prev;
 }
 
+//function to validate an input as an int
+int inputValidation(bool inputFail){
+    int result;
+    while(inputFail){
+        if(cin.fail()){
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(),'\n');
+            cout<<"\nYou've entered an invalid input, please make sure it's a numeric value (No words, no ASCII art, just numbers, ok?)"<< endl;
+            cout << "\nEnter a valid input: ";
+            cin >> result;
+        }
+        if(!cin.fail()){
+            break;
+        }
+        
+    }
+    return result;
+}
+
+//function for validating the start and end nodes
+int nodeValidation(vector<int> graphIndex, int inputNode){
+    bool exists;
+    while(true){
+        exists = find(begin(graphIndex), end(graphIndex), inputNode) != end(graphIndex);
+        if(!exists){
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(),'\n');
+            cout<<"\nYou've entered a node that doesn't exist, please make sure it's an existing node."<< endl;
+            cout << "\nEnter a valid node: ";
+            cin >> inputNode;
+        }
+        if(exists){
+            break;
+        } 
+    }
+    return inputNode;
+}
 
 void createMatrix(int size){
+    //declaring data
     int startNode;
     string nodeNames[size];
     int edgeWeights[size][size];
+
+    //making the border for the console
     int borderLen = (size+1)*9;
     string border(borderLen, '-');
 
+    //creating the matrix graph and list graph
     MatrixGraph matrixUser(size);
     ListGraph listUser(size);
+
+    //creating a vector to store the matrix and list graph indexes
+    //this is for the source and end node validation
+    vector<int> graphIndex;
+    for(int i = 0; i < size; i++){
+        graphIndex.push_back(i);
+    }
+    
     
     cout << "\nNOTE: ALL NODES WILL BE BI-DIRECTIONAL (GOES BOTH WAYS)"<< endl;
 
-    cout << "\nEnter node names: ";
+    //prompting the user for node names
+    cout << "\nEnter node names (can be string or numeric values): ";
 
     // storing the node names
     for(int i = 0; i < size; i++){
@@ -80,6 +132,7 @@ void createMatrix(int size){
         }
     }
 
+    //input validation for the matrix and list graph node weights
     while(true){
         if(cin.fail()){
             cin.clear();
@@ -133,11 +186,29 @@ void createMatrix(int size){
     cout << "Enter source node: ";
     cin >> startNode;
 
+
+    //input validation for the source node
+    bool inputFail3 = cin.fail();
+    if(inputFail3){
+        startNode = inputValidation(inputFail3);
+    }
+    startNode = nodeValidation(graphIndex, startNode);
+    cout << endl;
+
     //prompting for end node
     int endNode;
     cout << "Enter end node:";
     cin >> endNode ;
 
+    //input validation for the end node
+    bool inputFail4 = cin.fail();
+    if(inputFail4){
+        startNode = inputValidation(inputFail4);
+    }
+    endNode = nodeValidation(graphIndex, endNode);
+    cout << endl;
+
+    //setting the start and end node values
     int endNodeList = endNode;
     int endNodeMatrix = endNode;
 
@@ -201,19 +272,19 @@ void createMatrix(int size){
     double totalListTime = double(chrono::duration_cast<chrono::nanoseconds> (endListTime - startListTime).count());
 
     cout << "\nTime for matrix\t: " << totalMatrixTime << endl;
-    cout << "\nTime for list\t: " << totalListTime << endl;
+    cout << "Time for list\t: " << totalListTime << endl;
 
     //declaring the vectors for the paths
 
     //Printing out the cost and path
-    cout << "Matrix Cost\t: " << costMatrix << endl;
+    cout << "\nMatrix Cost\t: " << costMatrix << endl;
     cout << "Matrix Path\t: START - ";
     for(int i = matrixPath.size() - 1 ; i > -1 ; i--){
         cout << nodeNames[matrixPath[i]] << " - ";
     }
     cout << "END\n" << endl;
 
-    cout << "List Cost\t: " << costList << endl;
+    cout << "\nList Cost\t: " << costList << endl;
     cout << "List Path\t: START - ";
     for(int i = listPath.size() - 1; i > -1; i--){
         cout << nodeNames[listPath[i]] << " - ";
@@ -223,23 +294,6 @@ void createMatrix(int size){
 
 }
 
-int inputValidation(bool inputFail){
-
-    int result;
-    while(inputFail){
-        if(cin.fail()){
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(),'\n');
-            cout<<"\nYou've entered an invalid input, please make sure it's a numeric value (No words, no ASCII art, just numbers, ok?)"<< endl;
-            cout << "\nEnter a valid input: ";
-            cin >> result;
-        }
-        if(!cin.fail()){
-            break;
-        }
-    }
-    return result;
-}
 
 void processMatrixSize(){
     int size;
@@ -274,7 +328,7 @@ bool MainMenu(){
     }
     //processing if the input = 1
     if(userChoice == 1){
-        cout << "You have chosen option 1." << endl;
+        cout << "\nYou have chosen option 1." << endl;
         cout << "------------------------" << endl;
         processMatrixSize();
         MainMenu();
@@ -282,8 +336,8 @@ bool MainMenu(){
     //processing if the input = 2
     else if(userChoice == 2){
         cout << "\n:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" << endl;
-        cout << "You have chosen option 2." << endl;
-        cout << "MORE INFORMATION" << endl;
+        cout << "\nYou have chosen option 2." << endl;
+        cout << "\nMORE INFORMATION" << endl;
         cout << "-------------------------------------------------------------------------------------------------------" << endl;
         cout << "1. Custom Matrix"<< endl;
         cout << "This custom matrix option will help you to manually input the matrix based on your preferences."<< endl;
@@ -301,6 +355,7 @@ bool MainMenu(){
         exitPage();
     }
     else{
+        cout <<endl;
         cout << "                     _________________________________________________" << endl;
         cout << "            /|     |                                                 |" << endl;
         cout << "            ||     |   PLEASE ENTER THE RIGHT NUMBER 🔪              |" << endl;
