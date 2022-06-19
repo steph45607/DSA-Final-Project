@@ -3,78 +3,80 @@
 
 #include <iostream>
 #include <climits>
-#include <queue> // for queue and priority queue
+#include <queue>
 #include <vector>
-#include "Graph.cpp"
 
-// using std::cout;
-// using std::endl;
-// using std::priority_queue;
-// using std::greater;
-// using std::vector;
+#include "Graph.cpp"
 using namespace std;
 
-// Matrix part
+// MatrixGraph class
 class MatrixGraph : public Graph{
+	//declaring private data
 	private:
 		vector< vector<int> > mat;
-		int vert_cnt; // number of vertexes in the graph
-		int edg_cnt; // number of edges in the graph
+		int nodeCount; // number of vertexes/nodes in the graph
+		int edgeCount; // number of edges in the graph
 	public:
-		MatrixGraph(int vc):
-		vert_cnt(vc), edg_cnt(0), mat(vc, vector<int>(vc)) { }
-		// bi_dir means does the graph connect both ways
-		bool connect(int v, int u, int w, bool bi_dir) {
-			mat.at(v).at(u) = w;
-			if (bi_dir) mat.at(u).at(v) = w;
+		MatrixGraph(int n):
+		nodeCount(n), edgeCount(0), mat(n, vector<int>(n)) { }
+
+		//function to connect two nodes
+		//isDirected means does the graph connect both ways
+		bool connect(int from, int to, int weight, bool isDirected) {
+			mat.at(from).at(to) = weight;
+			if (isDirected) mat.at(to).at(from) = weight;
 			return true;
 		}
 
-		bool disconnect(int v, int u, bool bi_dir) {
-			mat.at(v).at(u) = 0;
-			if (bi_dir) mat.at(u).at(v) = 0;
+		//function to disconnect two nodes
+		bool disconnect(int from, int to, bool isDirected) {
+			mat.at(from).at(to) = 0;
+			if (isDirected) mat.at(to).at(from) = 0;
 			return true;
 		}
 
+		//function to return an edge's weight
 		int getWeight(int from, int to){
 			return mat.at(from).at(to);
 		}
 
-		vector<Edge> neighbor(int v) {
-			vector<Edge> res;
-			for (int i = 0; i < vert_cnt; i++) {
-				if (mat.at(v).at(i) > 0) {
-					Edge a = {v, i, mat.at(v).at(i)};
-					res.push_back(a);
+		//function to return an edge's neighbors
+		vector<Edge> neighbor(int to) {
+			vector<Edge> result;
+			for (int i = 0; i < nodeCount; i++) {
+				if (mat.at(to).at(i) > 0) {
+					Edge a = {to, i, mat.at(to).at(i)};
+					result.push_back(a);
 				}
 			}
-			return res;
+			return result;
 		}
 
-		vector<int> dijkstra(int s) {
-			vector<int> prev(vert_cnt, -1);
-			vector<int> dist(vert_cnt, INT_MAX);
+		//function to run the dijkstra algorithm
+		vector<int> dijkstra(int sourceNode) {
+			vector<int> previousNodes(nodeCount, -1);
+			vector<int> distance(nodeCount, INT_MAX);
 			priority_queue< Edge, vector<Edge>, greater<Edge> > pq;
-			dist[s] = 0;
-			Edge ed = {-1, s, 0};
-			pq.push(ed);
+			distance[sourceNode] = 0;
+			Edge edge = {-1, sourceNode, 0};
+			pq.push(edge);
 			Edge current;
 			while (!pq.empty()) {
 				current = pq.top();
 				pq.pop();
-				if (dist[current.to] == current.weight) {
+				if (distance[current.to] == current.weight) {
 					vector<Edge> edges = neighbor(current.to);
 					for (Edge& e : edges) {
-						if (dist[e.to] > dist[e.from] + e.weight) {
-							dist[e.to] = dist[e.from] + e.weight;
-							prev[e.to] = e.from;
-							Edge toPush = {e.from, e.to, dist[e.to]};
+						if (distance[e.to] > distance[e.from] + e.weight) {
+							distance[e.to] = distance[e.from] + e.weight;
+							previousNodes[e.to] = e.from;
+							Edge toPush = {e.from, e.to, distance[e.to]};
 							pq.push(toPush);
 						}
 					}
 				}
 			}
-			return prev;
+			return previousNodes;
 		}
 };
 

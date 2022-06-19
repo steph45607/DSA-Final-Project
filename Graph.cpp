@@ -3,15 +3,18 @@
 #include <iostream>
 #include <vector>
 using namespace std;
+
+
+//store info about origin node and end node with the cost connecting them
 struct Edge {
 	int from;
 	int to;
 	int weight;
 
-	friend std::ostream& operator<<(std::ostream& os, const Edge& nw){
-		os << "Edge(from=" << nw.from << ", to=" << nw.to  << ", weight=" << nw.weight << ")";
-		return os;
-	};
+	// friend std::ostream& operator<<(std::ostream& os, const Edge& nw){
+	// 	os << "Edge(from=" << nw.from << ", to=" << nw.to  << ", weight=" << nw.weight << ")";
+	// 	return os;
+	// };
 	friend bool operator<(const Edge& a, const Edge& b){
 		return a.weight < b.weight;
 	};
@@ -23,10 +26,11 @@ struct Edge {
 	};
 };
 
+//class for creating a weighted graph from nodes
 class Graph {
 public:
-	virtual bool connect(int v, int u, int w, bool bi_dir = false) = 0;
-	virtual bool disconnect(int v, int u, bool bi_dir = false) = 0;
+	virtual bool connect(int from, int to, int weight, bool bi_dir = false) = 0;
+	virtual bool disconnect(int from, int to, bool bi_dir = false) = 0;
 };
 
 class DisjointSet {
@@ -46,12 +50,4 @@ public:
 	};
 };
 
-template <class T>
-void print(const vector<T>& vec, const string& pre = "", const string& suf = "\n") {
-	cout << pre << "[";
-	for (const T& x : vec) {
-		cout << x << ", ";
-	}
-	cout << "]" << suf;
-}
 #endif

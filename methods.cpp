@@ -217,6 +217,31 @@ void createMatrix(int size){
     //TESTING FOR TIME TAKEN
     srand(time(0));
 
+    //LIST TIME TAKEN START
+    auto startListTime = chrono::steady_clock::now();
+
+    //declaring the vectors for the list paths
+    vector<int> listPrev = listDijkstra(listUser, startNode);
+    vector<int> listPath ;
+
+    //initializing the values for the total path costs
+    int costList = 0;
+
+    listPath.push_back(endNodeList);
+
+    //adding the list path costs to find the total
+    //adding the list path nodes to the resulting path list
+    while(endNodeList != startNode){
+        int prevNodeList = listPrev.at(endNodeList);
+
+        costList += listUser.getWeight(prevNodeList, endNodeList);
+        listPath.push_back(listPrev.at(endNodeList));
+        endNodeList = listPrev.at(endNodeList);
+    }
+    auto endListTime = chrono::steady_clock::now();
+
+    //LIST TIME TAKEN END
+
     //MATRIX TIME TAKEN START
     auto startMatrixTime = chrono::steady_clock::now();
 
@@ -241,38 +266,13 @@ void createMatrix(int size){
 
     //MATRIX TIME TAKEN END
 
-    //LIST TIME TAKEN START
-    auto startListTime = chrono::steady_clock::now();
-
-    //declaring the vectors for the list paths
-    vector<int> listPrev = listDijkstra(listUser, startNode);
-    vector<int> listPath ;
-
-    //initializing the values for the total path costs
-    int costList = 0;
-
-    listPath.push_back(endNodeList);
-
-    //adding the list path costs to find the total
-    //adding the list path nodes to the resulting path list
-    while(endNodeList != startNode){
-        int prevNodeList = listPrev.at(endNodeList);
-
-        costList += listUser.getWeight(prevNodeList, endNodeList);
-
-        listPath.push_back(listPrev.at(endNodeList));
-        endNodeList = listPrev.at(endNodeList);
-    }
-    auto endListTime = chrono::steady_clock::now();
-
-    //LIST TIME TAKEN END
 
     //getting the end time taken
     double totalMatrixTime = double(chrono::duration_cast<chrono::nanoseconds> (endMatrixTime - startMatrixTime).count());
-    double totalListTime = double(chrono::duration_cast<chrono::nanoseconds> (endListTime - startListTime).count());
+    // double totalListTime = double(chrono::duration_cast<chrono::nanoseconds> (endListTime - startListTime).count());
 
     cout << "\nTime for matrix\t: " << totalMatrixTime << endl;
-    cout << "Time for list\t: " << totalListTime << endl;
+    // cout << "Time for list\t: " << totalListTime << endl;
 
     //declaring the vectors for the paths
 
@@ -284,12 +284,12 @@ void createMatrix(int size){
     }
     cout << "END\n" << endl;
 
-    cout << "\nList Cost\t: " << costList << endl;
-    cout << "List Path\t: START - ";
-    for(int i = listPath.size() - 1; i > -1; i--){
-        cout << nodeNames[listPath[i]] << " - ";
-    }
-    cout << "END\n" << endl;
+    // cout << "\nList Cost\t: " << costList << endl;
+    // cout << "List Path\t: START - ";
+    // for(int i = listPath.size() - 1; i > -1; i--){
+    //     cout << nodeNames[listPath[i]] << " - ";
+    // }
+    // cout << "END\n" << endl;
 
 
 }
